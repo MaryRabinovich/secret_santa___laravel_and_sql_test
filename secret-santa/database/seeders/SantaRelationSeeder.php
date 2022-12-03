@@ -19,15 +19,19 @@ class SantaRelationSeeder extends Seeder
         $usersCount = User::count();
 
         $allUsersIDs = range(1, $usersCount);
+        shuffle($allUsersIDs);
 
-        $allUsersIDsShuffled = range(1, $usersCount);
-        shuffle($allUsersIDsShuffled);
-
-        foreach ($allUsersIDs as $key => $santaID) {
+        $i = 0;
+        while ($i < $usersCount - 1) {
             SantaRelation::create([
-                'santa_id' => $santaID,
-                'client_id' => $allUsersIDsShuffled[$key]
+                'santa_id' => $allUsersIDs[$i],
+                'client_id' => $allUsersIDs[++$i]
             ]);
         }
+
+        SantaRelation::create([
+            'santa_id' => $allUsersIDs[$usersCount - 1],
+            'client_id' => $allUsersIDs[0]
+        ]);
     }
 }
